@@ -53,7 +53,7 @@ public class Network {
      *  If any of the two names is not a user in this network,
      *  or if the "follows" addition failed for some reason, returns false. */
     public boolean addFollowee(String name1, String name2) {
-        if( getUser(name1)==null ||getUser(name2) == null ){return false;}
+        if( getUser(name1)==null ||getUser(name2) == null || name1.equals(name2)|| getUser(name1).follows(name2)){return false;}
         getUser(name1).addFollowee(name2);
         if(getUser(name1).follows(name2)){
             return true;
@@ -64,12 +64,15 @@ public class Network {
     /** For the user with the given name, recommends another user to follow. The recommended user is
      *  the user that has the maximal mutual number of followees as the user with the given name. */
     public String recommendWhoToFollow(String name) {
+        if(getUser(name)== null){return null;}
         User mostRecommendedUserToFollow = null;
-        int maxmutual =0;
+        int maxmutual =-1;
         for(int i=0;i<userCount;i++){
-            if(name.equals(users[i].getName())){continue;}
+            if(name.equals(users[i].getName())||getUser(name).follows(users[i].getName()) ){continue;}
             if(getUser(name).countMutual(users[i])>maxmutual)
-                {mostRecommendedUserToFollow = getUser(users[i].getName());}
+                {mostRecommendedUserToFollow = getUser(users[i].getName());
+                    maxmutual = getUser(name).countMutual(users[i]);
+                }
         }
         return mostRecommendedUserToFollow.getName();
     }
@@ -77,6 +80,7 @@ public class Network {
     /** Computes and returns the name of the most popular user in this network: 
      *  The user who appears the most in the follow lists of all the users. */
     public String mostPopularUser() {
+        if(userCount == 0){return null;}
         int nummostpopular =0;
         String Mostpopular ="";
         for(int i=0;i<userCount;i++){
@@ -100,7 +104,7 @@ public class Network {
 
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
-        String net = "";
+        String net = "Network:";
         for(int i=0;i<userCount;i++){
             net += '\n' + users[i].toString();
         }

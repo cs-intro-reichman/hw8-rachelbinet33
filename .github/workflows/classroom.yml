@@ -15,11 +15,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up JDK 22
+    - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin' # שינוי ל-temurin היציב יותר
-        java-version: '22'
+        distribution: 'temurin'
+        java-version: '21' # הגרסה הכי יציבה בגיט
 
     - name: Autograding
       uses: education/autograding@v1

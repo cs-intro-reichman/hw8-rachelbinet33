@@ -68,10 +68,11 @@
                     follows[j] = follows[j+1];
                 }
                 follows[fCount-1]=null;
-            }
+                fCount--;
+                return true;
+            }   
         }
-        fCount--;
-        return true;
+        return false;
     }
 
     /** Counts the number of users that both this user and the other user follow.
